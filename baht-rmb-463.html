@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#fff5f7">
+<meta name="color-scheme" content="light">
+<title>泰铢小算盘 · 4.63</title>
+<style>
+:root{--ink:#29463e;--muted:#65766c;--pink:#d92c74;--visible-height:100svh}
+*{box-sizing:border-box}
+html{background:#fff5f7;-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100vh;min-height:100svh;display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top)) 20px max(16px,env(safe-area-inset-bottom));color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:radial-gradient(ellipse at 98% 4%,#e4f8d6 0,transparent 44%),radial-gradient(ellipse at 0% 95%,#ffead0 0,transparent 36%),#fff5f7}
+button,input{font:inherit}
+button{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+button:focus-visible,input:focus-visible{outline:3px solid #2875c9;outline-offset:3px}
+.app{width:100%;max-width:420px;display:grid;gap:14px}
+.hero{min-height:82px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.eyebrow{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.brand{font-size:10px;font-weight:800;letter-spacing:2px;color:#887382}
+.spark{width:13px;height:13px;color:#488cdb}
+h1{font-size:28px;line-height:1.15;letter-spacing:-1px;margin:0;font-weight:800}
+.tagline{margin:7px 0 0;font-size:12px;color:var(--muted)}
+.leaf-art{width:91px;height:88px;flex:none;margin-right:2px}
+.quote-card{background:#fffefb;border:1px solid #f0dce2;border-radius:25px;padding:17px 19px 14px;box-shadow:0 7px 20px #955a6d08}
+.quote-top,.quote-bottom,.formula-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.quote-label{font-size:14px;font-weight:750}
+.badge{border-radius:20px;background:#f7f3a1;padding:5px 8px;font-size:10px;font-weight:700;color:#5f5e2c;white-space:nowrap}
+.input-line{display:flex;align-items:center;gap:8px;min-height:67px}
+.baht{font-size:34px;color:#df6294}
+#price{width:0;flex:1;min-width:0;height:58px;padding:0;border:0;border-radius:0;outline:0;background:transparent;color:var(--ink);font-size:43px;font-weight:750;letter-spacing:-1.5px;font-variant-numeric:tabular-nums}
+#price::placeholder{color:#cfccc7;opacity:1}
+#price:focus{box-shadow:0 2px 0 #ed679d}
+#price[aria-invalid="true"]{color:#b02a47}
+.input-unit{font-size:12px;color:var(--muted)}
+.clear{width:38px;height:44px;flex:none;border:0;background:transparent;border-radius:12px;color:#978892;display:grid;place-items:center}
+.clear svg{width:18px;height:18px}
+.fx{font-size:11px;color:var(--muted)}
+.fx strong{color:#6c655c}
+.calculate{min-width:78px;min-height:38px;padding:8px 13px;border:0;background:var(--pink);border-radius:14px;color:white;font-size:12px;font-weight:750;display:flex;justify-content:center;align-items:center;gap:7px;box-shadow:0 3px 0 #b41f5e}
+.calculate svg{width:15px;height:15px}
+.calculate:active,.copy:active{transform:translateY(1px)}
+.status{margin:0;padding:0 3px;font-size:11px;color:#827582;min-height:16px;line-height:16px}
+.status.error{color:#ad294a}
+.result{min-height:113px;border:1px solid #cbe8c1;border-radius:24px;background:#dff5d6;padding:19px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.result h2{margin:0 0 7px;font-size:15px;font-weight:750}
+.result-sub{margin:0;font-size:10px;color:#697d62;line-height:1.5}
+.amount{color:#345839;white-space:nowrap;font-variant-numeric:tabular-nums;display:flex;align-items:baseline;gap:4px}
+.currency{font-size:19px;font-weight:650}
+output{font-size:48px;font-weight:800;letter-spacing:-2px;line-height:1.05}
+.result.large output{font-size:35px}
+.formula-card{min-width:0;background:#ffdfed;border:1px solid #f3cadb;border-radius:24px;padding:18px;color:#993761}
+.formula-top h2{font-size:14px;font-weight:750;margin:0}
+.formula-note{font-size:10px;white-space:nowrap;color:#9e5576}
+#formula{display:block;width:100%;min-width:0;margin:12px 0;padding:0;height:35px;border:0;border-radius:6px;background:transparent;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:21px;font-weight:650;letter-spacing:-.6px;color:#8c345b;-webkit-text-fill-color:#8c345b;opacity:1;user-select:text;-webkit-user-select:text}
+#formula::placeholder{color:#b9849c;-webkit-text-fill-color:#b9849c;font-size:15px;font-weight:400}
+.copy{width:100%;min-height:45px;border:1px solid #b9d5fa;border-radius:14px;background:#ddebff;color:#2d5d96;display:flex;align-items:center;justify-content:center;gap:7px;font-size:14px;font-weight:750}
+.copy svg{width:17px;height:17px;flex:none}
+.copy:disabled{opacity:.55;cursor:default}
+.copy[data-state="copied"]{background:#dff5d6;border-color:#b5d7aa;color:#365f3c}
+.copy-feedback{min-height:16px;line-height:16px;margin:8px 0 0;font-size:10px;color:#9e5576;text-align:center}
+.footer{margin:0;display:flex;align-items:center;justify-content:center;gap:5px;color:#8a7d81;font-size:10px;line-height:16px}
+.footer svg{height:12px;width:12px;color:#75a75b}
+noscript{position:fixed;inset:0;z-index:5;padding:26px;background:#fff5f7;display:grid;place-items:center}
+noscript p{font-size:16px;max-width:340px;line-height:1.8}
+@media(max-width:370px){body{padding-left:14px;padding-right:14px}.app{gap:11px}h1{font-size:25px}.leaf-art{width:75px;height:75px}.quote-card{padding-left:16px;padding-right:16px}#price{font-size:35px}.result{padding:16px}.result h2{font-size:14px}output{font-size:40px}.result.large output{font-size:29px}.formula-card{padding:15px}#formula{font-size:18px}.result-sub{font-size:9px}}
+html.dense .app{gap:10px}
+html.dense .hero{min-height:65px}
+html.dense .leaf-art{width:70px;height:68px}
+html.dense .tagline{display:none}
+html.dense .quote-card{padding-top:12px;padding-bottom:11px}
+html.dense .input-line{min-height:58px}
+html.dense #price{height:50px}
+html.dense .result{min-height:91px;padding-top:14px;padding-bottom:14px}
+html.dense .formula-card{padding-top:14px;padding-bottom:13px}
+html.tight .app{gap:8px}
+html.tight .hero{min-height:54px}
+html.tight .leaf-art{width:54px;height:54px}
+html.tight .quote-card{padding-top:10px;padding-bottom:9px}
+html.tight .result{min-height:82px;padding-top:10px;padding-bottom:10px}
+html.tight .formula-card{padding-top:12px;padding-bottom:11px}
+html.tight #formula{margin-top:8px;margin-bottom:8px}
+html.compact body{min-height:var(--visible-height);align-items:start;padding-top:8px;padding-bottom:8px}
+html.compact .app{gap:7px}
+html.compact .hero{min-height:26px}
+html.compact h1{font-size:19px;letter-spacing:-.5px}
+html.compact .hero,html.compact .status,html.compact .footer{display:none}
+html.compact .quote-card{padding:9px 14px;border-radius:18px}
+html.compact .input-line{min-height:42px}
+html.compact #price{font-size:31px;height:40px}
+html.compact .baht{font-size:27px}
+html.compact .calculate{min-height:32px;padding-top:5px;padding-bottom:5px}
+html.compact .result{min-height:62px;padding:10px 14px;border-radius:18px}
+html.compact .result h2{font-size:13px;margin-bottom:3px}
+html.compact output{font-size:31px}
+html.compact .result.large output{font-size:26px}
+html.compact .formula-card{padding:10px 14px;border-radius:18px}
+html.compact #formula{height:28px;margin:6px 0;font-size:18px}
+html.compact .copy{min-height:36px;font-size:12px}
+html.compact .copy-feedback{margin-top:5px;font-size:9px}
+@media(prefers-reduced-motion:no-preference){.copy,.calculate{transition:background .12s,transform .12s}}
+</style>
+</head>
+<body>
+<main class="app" aria-label="泰铢转人民币计算器">
+  <header class="hero">
+    <div>
+      <div class="eyebrow"><svg class="spark" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 0l2.6 7.4L20 10l-7.4 2.6L10 20l-2.6-7.4L0 10l7.4-2.6z"/></svg><span class="brand">BAHT TO RMB</span></div>
+      <h1>泰铢小算盘</h1>
+      <p class="tagline">换算心动价格，分享也轻松。</p>
+    </div>
+    <svg class="leaf-art" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="60" cy="43" r="35" fill="#f6f18b"/>
+        <path d="M48 93Q55 74 56 47M59 93Q71 69 77 41" fill="none" stroke="#668348" stroke-width="3" stroke-linecap="round"/>
+        <path d="M56 66C41 63 13 40 26 21C35 8 47 18 50 26C52 8 73 3 79 18C85 34 71 55 56 66Z" fill="#a5d687" stroke="#628248" stroke-width="2"/>
+        <path d="M55 61C43 55 24 38 31 25C36 16 47 25 51 32C56 14 70 14 73 23C78 34 66 53 55 61Z" fill="#f791b3"/>
+        <path d="M55 61L51 30M52 39L35 28M53 46L34 40M54 52L43 48M52 39L68 25M53 47L70 38M54 54L63 48" fill="none" stroke="#b74477" stroke-width="1.3" stroke-linecap="round"/>
+        <g transform="rotate(25 78 48)">
+          <path d="M78 72C64 62 56 47 61 37C65 30 74 33 78 41C81 26 94 26 96 36C100 49 87 66 78 72Z" fill="#7fb76a" stroke="#60864c" stroke-width="1.7"/>
+          <path d="M78 66C68 59 63 48 66 41C69 36 75 40 78 45C82 32 89 32 92 38C96 48 86 61 78 66Z" fill="#ffcae0"/>
+          <path d="M78 67V43M78 50L68 43M78 57L68 53M78 50L89 39M78 58L89 51" fill="none" stroke="#d46c98" stroke-width="1.1"/>
+        </g>
+        <path d="M13 60l2 6 6 2-6 2-2 6-2-6-6-2 6-2z" fill="#679fde"/>
+        <circle cx="91" cy="13" r="3" fill="#ed5692"/>
+      </svg>
+  </header>
+  <form class="quote-card" id="quoteForm" novalidate autocomplete="off">
+    <div class="quote-top"><label class="quote-label" for="price">泰铢金额</label><span class="badge">固定汇率 4.63</span></div>
+    <div class="input-line">
+      <span class="baht" aria-hidden="true">฿</span>
+      <input id="price" name="price" type="text" inputmode="decimal" enterkeyhint="done" maxlength="14" placeholder="1500" spellcheck="false" aria-describedby="status fx" aria-invalid="false">
+      <span class="input-unit">泰铢</span>
+      <button type="button" class="clear" id="clear" aria-label="清空金额"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6m0-6l-6 6"/></svg></button>
+    </div>
+    <div class="quote-bottom"><span class="fx" id="fx">人民币 = 泰铢 <strong>÷ 4.63</strong></span><button type="submit" class="calculate" aria-label="换算并完成输入">换算<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10h13M11 5l5 5-5 5"/></svg></button></div>
+  </form>
+  <p class="status" id="status" role="status" aria-live="polite">输入金额，即时换算</p>
+  <section class="result" aria-labelledby="resultLabel">
+    <div><h2 id="resultLabel">人民币价格</h2><p class="result-sub">除以 4.63<br>向上取整到元</p></div>
+    <div class="amount"><span class="currency" aria-hidden="true">¥</span><output id="rmb" for="price" aria-label="人民币价格，向上取整">—</output></div>
+  </section>
+  <section class="formula-card" aria-labelledby="formulaLabel">
+    <div class="formula-top"><h2 id="formulaLabel">计算公式</h2><span class="formula-note">保留两位小数</span></div>
+    <input id="formula" type="text" readonly placeholder="输入金额后显示公式" aria-label="可复制的计算公式" spellcheck="false">
+    <button type="button" class="copy" id="copy" disabled>
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="6" width="10" height="12" rx="2"/><path d="M13 6V4a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
+      <span id="copyLabel">一键复制公式</span>
+    </button>
+    <p class="copy-feedback" id="copyFeedback" role="status" aria-live="polite">复制内容含原金额、汇率和计算结果</p>
+  </section>
+  <p class="footer"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 16C3 7 9 3 17 3c0 8-4 13-13 13zm0 0L13 7"/></svg>人民币向上取整 · 公式保留两位小数</p>
+</main>
+<noscript><p>这个计算器需要 JavaScript。若当前打开方式只是文件预览，可在支持 JavaScript 的本地 HTML 查看器中运行。</p></noscript>
+<script>
+'use strict';
+const STORAGE_KEY='baht-rmb-463-v1';
+const input=document.getElementById('price');
+const output=document.getElementById('rmb');
+const formula=document.getElementById('formula');
+const status=document.getElementById('status');
+const copyButton=document.getElementById('copy');
+const copyLabel=document.getElementById('copyLabel');
+const feedback=document.getElementById('copyFeedback');
+let revision=0;
+
+function parseBaht(value){
+  const raw=value.trim().replace(/[０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0)).replace(/[．，,]/g,'.');
+  if(!/^(?:\d+(?:\.\d{0,2})?|\.\d{1,2})$/.test(raw))return null;
+  const [whole,fraction='']=raw.split('.');
+  const cents=BigInt(whole||'0')*100n+BigInt(fraction.padEnd(2,'0')||'0');
+  if(cents>999999999n)return null;
+  const remainder=String(cents%100n).padStart(2,'0').replace(/0+$/,'');
+  const normalized=String(cents/100n)+(remainder?'.'+remainder:'');
+  return {cents,normalized};
+}
+
+function convertBaht(value){
+  const parsed=parseBaht(value);
+  if(!parsed)return null;
+  // A baht amount in hundredths divided by 463 is the exact RMB amount.
+  // Integer arithmetic avoids rounding errors at whole-yuan boundaries.
+  const rmbCeiling=(parsed.cents+462n)/463n;
+  const hundredths=(parsed.cents*100n+231n)/463n;
+  const fixed=String(hundredths/100n)+'.'+String(hundredths%100n).padStart(2,'0');
+  return {rounded:String(rmbCeiling),formula:parsed.normalized+'/4.63='+fixed};
+}
+
+function update(){
+  revision++;
+  const empty=input.value.trim()==='';
+  const result=empty?null:convertBaht(input.value);
+  input.setAttribute('aria-invalid',String(!empty&&!result));
+  status.classList.toggle('error',!empty&&!result);
+  output.textContent=result?result.rounded:'—';
+  output.closest('section').classList.toggle('large',Boolean(result&&result.rounded.length>=6));
+  formula.value=result?result.formula:'';
+  formula.style.fontSize=result&&result.formula.length>23?'15px':'';
+  input.style.fontSize=input.value.length>8?'27px':'';
+  copyButton.disabled=!result;
+  copyButton.removeAttribute('data-state');
+  copyLabel.textContent='一键复制公式';
+  feedback.textContent='复制内容含原金额、汇率和计算结果';
+  status.textContent=empty?'输入金额，即时换算':result?'已换算 · 人民币向上取整':'请输入 0–9999999.99 的金额，最多两位小数';
+  try{if(result)localStorage.setItem(STORAGE_KEY,input.value);else if(empty)localStorage.removeItem(STORAGE_KEY);}catch(_){}
+}
+
+function legacyCopy(text){
+  // A real, selectable field supports local files and browsers without Clipboard API.
+  const active=document.activeElement;
+  const scrollX=window.scrollX,scrollY=window.scrollY;
+  formula.value=text;
+  formula.focus();
+  formula.select();
+  formula.setSelectionRange(0,text.length);
+  let copied=false;
+  try{copied=typeof document.execCommand==='function'&&document.execCommand('copy');}catch(_){}
+  if(copied){
+    formula.blur();
+    const selection=window.getSelection();if(selection)selection.removeAllRanges();
+    if(active&&active!==input&&typeof active.focus==='function')active.focus({preventScroll:true});
+    window.scrollTo(scrollX,scrollY);
+  }
+  return copied;
+}
+
+async function copyFormula(){
+  const text=formula.value;
+  if(!text||copyButton.disabled)return;
+  const currentRevision=revision;
+  input.blur();
+  let copied=false;
+  if(navigator.clipboard&&typeof navigator.clipboard.writeText==='function'){
+    try{await navigator.clipboard.writeText(text);copied=true;}catch(_){}
+  }
+  if(currentRevision!==revision)return;
+  if(!copied)copied=legacyCopy(text);
+  if(copied){
+    copyLabel.textContent='已复制';
+    copyButton.setAttribute('data-state','copied');
+    feedback.textContent='已复制 '+text;
+  }else{
+    copyLabel.textContent='重新复制';
+    feedback.textContent='公式已选中，可长按选择“复制”';
+  }
+}
+
+input.addEventListener('input',update);
+document.getElementById('quoteForm').addEventListener('submit',event=>{event.preventDefault();update();input.blur();});
+document.getElementById('clear').addEventListener('click',()=>{input.value='';update();input.focus();});
+copyButton.addEventListener('click',copyFormula);
+try{input.value=localStorage.getItem(STORAGE_KEY)||'';}catch(_){}
+update();
+function adaptViewport(){
+  const height=window.visualViewport?window.visualViewport.height:window.innerHeight;
+  const root=document.documentElement;
+  root.style.setProperty('--visible-height',height+'px');
+  const spacing=getComputedStyle(document.body);
+  const available=height-parseFloat(spacing.paddingTop)-parseFloat(spacing.paddingBottom);
+  root.classList.toggle('dense',available<690);
+  root.classList.toggle('tight',available<565);
+  root.classList.toggle('compact',height<490);
+}
+if(window.visualViewport)window.visualViewport.addEventListener('resize',adaptViewport);
+window.addEventListener('resize',adaptViewport);
+adaptViewport();
+</script>
+</body>
+</html>
